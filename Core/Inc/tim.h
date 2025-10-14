@@ -42,7 +42,7 @@ void MX_TIM1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 extern volatile uint32_t tick;
-extern uint8_t tim_count_led;
+extern uint16_t tim_count_led;
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

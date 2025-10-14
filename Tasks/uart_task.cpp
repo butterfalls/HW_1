@@ -53,6 +53,10 @@ void UartTask::rx_event_callback(uint16_t size) {
     }
 }
 
+UartCommData UartTask::get_received_data() const {
+    return data_rx_;
+}
+
 void UartTask::encode() {
     tx_buffer_[0] = 0xAA;
     tx_buffer_[1] = 0xBB;
@@ -127,4 +131,8 @@ void UartTask_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
     if (huart->Instance == USART2) {
          g_uart_task.rx_event_callback(Size);
     }
+}
+
+UartCommData uart_task_get_received_data(void) {
+    return g_uart_task.get_received_data();
 }

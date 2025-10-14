@@ -13,6 +13,14 @@ void can_task_run(uint32_t current_tick) {
     g_can_task.run(current_tick);
 }
 
+CANCommData can_task_get_received_data(void) {
+    return g_can_task.get_received_data();
+}
+
+CANCommData CanTask::get_received_data() const {
+    return data_rx_;
+}
+
 CanTask::CanTask() :
     hcan_(nullptr),
     last_send_tick_(0)

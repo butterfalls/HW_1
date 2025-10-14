@@ -2,13 +2,9 @@
 #define CAN_TASK_HPP
 
 #include "main.h"
-#include <stdbool.h>
-
 #include "HW_can.hpp"
 
-#ifdef __cplusplus
-
-struct CANCommData {
+typedef struct  {
     uint32_t tick;
     float    value1;
     uint8_t  value2;
@@ -16,7 +12,9 @@ struct CANCommData {
     bool     flag2;
     bool     flag3;
     bool     flag4;
-};
+}CANCommData;
+
+#ifdef __cplusplus
 
 class CanTask {
 public:
@@ -25,6 +23,7 @@ public:
     void run(uint32_t current_tick);
 
     void rx_message_callback();
+    CANCommData get_received_data() const;
 
 private:
     CAN_HandleTypeDef* hcan_;
@@ -46,6 +45,7 @@ extern "C" {
 
 void can_task_init(void);
 void can_task_run(uint32_t current_tick);
+CANCommData can_task_get_received_data(void);
 
 #ifdef __cplusplus
 }

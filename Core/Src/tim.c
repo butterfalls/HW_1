@@ -22,7 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 volatile uint32_t tick = 0;
-uint8_t tim_count_led = 0;
+uint16_t tim_count_led = 0;
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim1;
@@ -42,9 +42,9 @@ void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 8-1;
+  htim1.Init.Prescaler = 72-1;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 65535;
+  htim1.Init.Period = 1000-1;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -111,17 +111,16 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 /* USER CODE BEGIN 1 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  if (htim->Instance == TIM1)
-  {
-    tick++;
-    if(tim_count_led >= 500)
-      {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-      }
-      else
-      {
+    if (htim->Instance == TIM1)
+    {
+        tick++;
         tim_count_led++;
-      }
-  }
+
+        if(tim_count_led >= 1000) 
+        {
+            HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+            tim_count_led = 0; 
+        }
+    }
 }
 /* USER CODE END 1 */

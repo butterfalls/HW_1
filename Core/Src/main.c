@@ -26,6 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdbool.h>
 #include "can_task.hpp"
 #include "uart_task.hpp"
 /* USER CODE END Includes */
@@ -48,7 +49,13 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+UartCommData received_data;
+float received_value;
+uint32_t received_tick;
+float    can_val1;
+uint8_t  can_val2;
+bool     can_flag1;
+uint32_t can_tick;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,9 +86,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  uart_task_init();
-  HAL_TIM_Base_Start_IT(&htim1);
-  can_task_init();
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -99,7 +104,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  uart_task_init();
+  HAL_TIM_Base_Start_IT(&htim1);
+  can_task_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -109,8 +116,18 @@ int main(void)
     uart_task_run(tick);
     can_task_run(tick);
     /* USER CODE END WHILE */
-    
+
     /* USER CODE BEGIN 3 */
+    received_data = uart_task_get_received_data();
+    received_value = received_data.value;
+    received_tick = received_data.tick;
+
+    CANCommData received_can_data;
+    received_can_data = can_task_get_received_data();
+    can_val1 = received_can_data.value1;
+    can_val2 = received_can_data.value2;
+    can_flag1 = received_can_data.flag1;
+    can_tick = received_can_data.tick;
   }
   /* USER CODE END 3 */
 }

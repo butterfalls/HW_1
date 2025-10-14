@@ -3,12 +3,12 @@
 
 #include "main.h" 
 
-#ifdef __cplusplus
-
-struct UartCommData {
+typedef struct {
     uint32_t tick;
     float value;
-};
+}UartCommData;
+
+#ifdef __cplusplus
 
 class UartTask {
 public:
@@ -16,6 +16,7 @@ public:
     void init(UART_HandleTypeDef* tx_huart, UART_HandleTypeDef* rx_huart);
     void run(uint32_t current_tick);
     void rx_event_callback(uint16_t size);
+    UartCommData get_received_data() const;
 
 private:
     static constexpr uint8_t TX_BUFFER_SIZE = 9;
@@ -54,6 +55,7 @@ extern "C" {
 void uart_task_init(void);
 void uart_task_run(uint32_t current_tick);
 void UartTask_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size);
+UartCommData uart_task_get_received_data(void);
 
 #ifdef __cplusplus
 }
